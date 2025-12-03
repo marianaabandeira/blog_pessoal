@@ -10,19 +10,11 @@ async function bootstrap() {
 
   // Pipeline global de validação
   app.useGlobalPipes(
-    new ValidationPipe({
-      whitelist: true,
-      forbidNonWhitelisted: true,
-      transform: true,
-    }),
+    new ValidationPipe(),
   );
 
   // CORS configurado para ambiente de produção
-  app.enableCors({
-    origin: 'https://meusitefrontend.com', // coloque o domínio real do seu front-end
-    methods: 'GET,POST,PUT,DELETE',
-    allowedHeaders: 'Content-Type, Authorization',
-  });
+  app.enableCors();
 
   await app.listen(process.env.PORT ?? 4000);
 }
