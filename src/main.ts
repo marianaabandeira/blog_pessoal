@@ -1,21 +1,34 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
+  // inicializa o projeto nest, e armazena isso em uma const
   const app = await NestFactory.create(AppModule);
 
-  // Fuso horário
-  process.env.TZ = '-03:00';
+  // Indicamos a configuração do Swagger
+  const config = new DocumentBuilder()
+    .setTitle('Blog Pessoal')
+    .setDescription('Projeto Blog Pessoal')
+    .setContact("Mariana Bandeira", "https://github.com/marianaabandeira", "marianaabandeiira@gmail.com")
+    .setVersion('1.0')
+    .addBearerAuth()
+    .build();
 
-  // Pipeline global de validação
-  app.useGlobalPipes(
-    new ValidationPipe(),
-  );
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('/swagger', app, document);
 
-  // CORS configurado para ambiente de produção
+  //configura o fuso horario do banco de dados
+  process.env.TZ = '-03:00'
+
+  // valida as requisições
+  app.useGlobalPipes(new ValidationPipe())
+
+  // ativa o cors, para que o back possa receber requisições do front
   app.enableCors();
 
+  // aqui é definido a porta
   await app.listen(process.env.PORT ?? 4000);
 }
 bootstrap();
