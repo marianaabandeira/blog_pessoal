@@ -1,17 +1,18 @@
 
-import { Body, Controller, Delete, Get, HttpCode, HttpException, HttpStatus, Param, ParseIntPipe, Post, Put, UseGuards } from "@nestjs/common";
-import { JwtAuthGuard } from "../../auth/guard/jwt-auth.guard";
-import { Tema } from "../entities/tema.entity";
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, ParseIntPipe, Post, Put, UseGuards } from "@nestjs/common";
 import { TemaService } from "../services/tema.service";
+import { Tema } from "../entities/tema.entity";
+import { DeleteResult } from "typeorm";
+import { JwtAuthGuard } from "../../auth/guard/jwt-auth.guard";
 import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 
-
 @ApiTags('Tema')
-@UseGuards(JwtAuthGuard)    // Colocando essa Anotação aqui, indica que todos os endpoints são protegidos
+@UseGuards(JwtAuthGuard)
 @Controller("/temas")
 @ApiBearerAuth()
 export class TemaController {
     constructor(private readonly temaService: TemaService) { }
+
 
     @Get()
     @HttpCode(HttpStatus.OK)
@@ -27,26 +28,25 @@ export class TemaController {
 
     @Get('/descricao/:descricao')
     @HttpCode(HttpStatus.OK)
-    findAllBydescricao(@Param('descricao') descricao: string): Promise<Tema[]> {
+    findAllByDescricao(@Param('descricao') descricao: string): Promise<Tema[]> {
         return this.temaService.findAllByDescricao(descricao);
     }
 
     @Post()
     @HttpCode(HttpStatus.CREATED)
-    create(@Body() Tema: Tema): Promise<Tema> {
-        return this.temaService.create(Tema);
+    create(@Body() tema: Tema): Promise<Tema> {
+        return this.temaService.create(tema);
     }
 
     @Put()
     @HttpCode(HttpStatus.OK)
-    update(@Body() Tema: Tema): Promise<Tema> {
-        return this.temaService.update(Tema);
+    update(@Body() tema: Tema): Promise<Tema> {
+        return this.temaService.update(tema);
     }
 
     @Delete('/:id')
     @HttpCode(HttpStatus.NO_CONTENT)
-    delete(@Param('id', ParseIntPipe) id: number) {
+    delete(@Param('id', ParseIntPipe) id: number): Promise<DeleteResult> {
         return this.temaService.delete(id);
     }
-
 }

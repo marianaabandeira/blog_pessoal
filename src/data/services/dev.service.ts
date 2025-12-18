@@ -17,6 +17,6 @@ export class DevService implements TypeOrmOptionsFactory {
             database: 'db_blogpessoal',
             entities: [Postagem, Tema, Usuario],
             synchronize: true,
-    };
-  }
+        };
+    }
 }

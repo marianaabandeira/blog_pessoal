@@ -5,19 +5,16 @@ import { ApiProperty } from "@nestjs/swagger";
 
 @Entity({ name: "tb_temas" })
 export class Tema {
-
     @PrimaryGeneratedColumn()
     @ApiProperty()
-    id: number
+    id: number;
 
     @IsNotEmpty()
     @Column({ length: 255, nullable: false })
     @ApiProperty()
-    descricao: string
+    descricao: string;
 
-    // Indica o lado UM do relacionamento, indicando que esse campo se conecta ao campo Usuario da Model Postagem
-    @OneToMany(() => Postagem, (postagem) => postagem.tema)
     @ApiProperty()
+    @OneToMany(() => Postagem, (postagem) => postagem.tema)
     postagem: Postagem[]
-
 }

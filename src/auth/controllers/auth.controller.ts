@@ -1,4 +1,3 @@
-
 import { Body, Controller, HttpCode, HttpStatus, Post, UseGuards } from '@nestjs/common';
 import { LocalAuthGuard } from '../guard/local-auth.guard';
 import { AuthService } from '../services/auth.service';
@@ -10,7 +9,6 @@ import { ApiTags } from '@nestjs/swagger';
 export class AuthController {
     constructor(private authService: AuthService) { }
 
-    // Anotação que indica que usaremos uma classe de validação especial (Guard)
     @UseGuards(LocalAuthGuard)
     @HttpCode(HttpStatus.OK)
     @Post('/logar')
